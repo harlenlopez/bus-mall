@@ -7,8 +7,8 @@ var photoContainer = document.getElementById('photo-container');
 var left = document.getElementById('left');
 var middle = document.getElementById('middle');
 var right = document.getElementById('right');
-
 var allImages = [];
+var totalTimesClicked = 0;
 
 function Product(name, imageURL) {
   this.name = name;
@@ -39,19 +39,50 @@ new Product('usb', 'img/usb.gif');
 new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
 
-var totalTimesClicked = 0;
+function votes() {
+  if (totalTimesClicked === 25) {
+    var productList = document.getElementById('product-list');
+    for (var i = 0; i < allImages.length; i++) {
+      var newProductList = document.createElement('li');
+      newProductList.textContent = `${allImages[i].name} had ${allImages[i].votes} votes, and was shown ${allImages[i].imageViewed} times.`;
+      productList.appendChild(newProductList);
+    }
+    for (var j = 0; j < photoContainer.length; j++) {
+      photoContainer[i].removeEventListener('click', imageClicked);
+    }
+  }
+}
+
 function imageClicked(event) {
   console.log('clicked on image');
   totalTimesClicked++;
   displayImages();
 
-  if (totalTimesClicked >= 25) {
-    var footerElement = document.getElementsByClassName('footer')[0];
-    footerElement.textContent = 'Thank you for assisting us in choosing a new product';
+  if (event.srcElement.id === '1') {
+    allImages[left].totalTimesClicked++;
+  } else if (event.srcElement.id === '2') {
+    allImages[middle].totalTimesClicked++;
+  } else if (event.srcElement.id === '3') {
+    allImages[right].totalTimesClicked++;
   }
-
-
 }
+
+// var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex1 === left) || (nextImgIndex1 === middle) || (nextImgIndex3 === right)) {
+//   nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex2 === left) || (nextImgIndex2 === middle) || (nextImgIndex2 === nextImgIndex1)) {
+//   nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex3 === left) || (nextImgIndex3 === middle) || (nextImgIndex3 === nextImgIndex1 === nextImgIndex2)) {
+//   nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// }
+// if (totalTimesClicked >= 25) {
+//   var footerElement = document.getElementsByClassName('footer')[0];
+//   footerElement.textContent = 'Thank you for assisting us in choosing a new product';
+// }
 
 console.log('things');
 
@@ -79,8 +110,9 @@ function displayImages() {
   left.src = allImages[shownImages[0]].imageURL;
   middle.src = allImages[shownImages[1]].imageURL;
   right.src = allImages[shownImages[2]].imageURL;
-}
 
+  votes();
+}
 
 photoContainer.addEventListener('click', imageClicked);
 
