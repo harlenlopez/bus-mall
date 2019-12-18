@@ -12,6 +12,14 @@ var right = document.getElementById('right');
 var allImages = [];
 var totalTimesClicked = 0;
 
+function graphData(property) {
+  var graph = [];
+  for (var i = 0; i < allImages.length; i++) {
+    graph.push(allImages[i][property]);
+  }
+  return graph;
+}
+
 function Product(name, imageURL) {
   this.name = name;
   this.imageURL = imageURL;
@@ -21,7 +29,7 @@ function Product(name, imageURL) {
 
 }
 console.log('function');
-
+//mehtods:
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
 new Product('bathroom', 'img/bathroom.jpg');
@@ -48,6 +56,47 @@ function votes() {
       var newProductList = document.createElement('li');
       newProductList.textContent = `${allImages[i].name} had ${allImages[i].timesClicked} votes, and was shown ${allImages[i].imageViewed} times.`;
       productList.appendChild(newProductList);
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      // eslint-disable-next-line no-undef
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: graphData('name'),
+          datasets: [
+            {
+              label: '# of Votes',
+              data: graphData('timesClicked'),
+              backgroundColor:
+                'rgba(255, 99, 132, 0.2)',
+              borderColor:
+                'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            },
+            {
+              label: '# of viewed',
+              data: graphData('imageViewed'),
+              backgroundColor:
+                'rgba(125, 99, 132, 0.2)',
+              borderColor:
+                'rgba(125, 99, 132, 1)',
+              borderWidth: 1
+            }
+          ]
+
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+
+
     }
     for (var j = 0; j < photoContainer.length; j++) {
       photoContainer[j].removeEventListener('click', imageClicked);
@@ -75,24 +124,6 @@ function imageClicked(event) {
 
   // console.log(allImages[shownImages[0]], allImages[shownImages[1]], allImages[shownImages[2]]);
 }
-
-
-// var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
-// while ((nextImgIndex1 === left) || (nextImgIndex1 === middle) || (nextImgIndex3 === right)) {
-//   nextImgIndex1 = Math.floor(Math.random() * allImages.length);
-// }
-// var nextImgIndex2 = Math.floor(Math.random() * allImages.length);
-// while ((nextImgIndex2 === left) || (nextImgIndex2 === middle) || (nextImgIndex2 === nextImgIndex1)) {
-//   nextImgIndex2 = Math.floor(Math.random() * allImages.length);
-// }
-// var nextImgIndex3 = Math.floor(Math.random() * allImages.length);
-// while ((nextImgIndex3 === left) || (nextImgIndex3 === middle) || (nextImgIndex3 === nextImgIndex1 === nextImgIndex2)) {
-//   nextImgIndex3 = Math.floor(Math.random() * allImages.length);
-// }
-// if (totalTimesClicked >= 25) {
-//   var footerElement = document.getElementsByClassName('footer')[0];
-//   footerElement.textContent = 'Thank you for assisting us in choosing a new product';
-// }
 
 console.log('things');
 
@@ -122,7 +153,6 @@ function displayImages() {
 
   votes();
 }
-
 // photoContainer.addEventListener('click', imageClicked);
 for (var j = 0; j < photoContainer.length; j++) {
   photoContainer[j].addEventListener('click', imageClicked);
@@ -132,20 +162,23 @@ for (var j = 0; j < photoContainer.length; j++) {
 
 
 
+// localStorage.setItem('userName', 'harlen');
+// localStorage.getItem('userName');
+// // myChart();
 
-
-
-
-
-
-
-
-
-
-//day 2 new stuff to add
-//
-//
-//adding onto existing base code
-//using chart.js
-//pulling in external code into exesting code
-//gonna use a cdn to pull in our files, its a contant delivery;
+// var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex1 === left) || (nextImgIndex1 === middle) || (nextImgIndex3 === right)) {
+//   nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex2 === left) || (nextImgIndex2 === middle) || (nextImgIndex2 === nextImgIndex1)) {
+//   nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex3 === left) || (nextImgIndex3 === middle) || (nextImgIndex3 === nextImgIndex1 === nextImgIndex2)) {
+//   nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// }
+// if (totalTimesClicked >= 25) {
+//   var footerElement = document.getElementsByClassName('footer')[0];
+//   footerElement.textContent = 'Thank you for assisting us in choosing a new product';
+// }
