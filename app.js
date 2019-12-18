@@ -2,7 +2,9 @@
 
 console.log('js linked');
 
-var photoContainer = document.getElementById('photo-container');
+var photoContainer = document.getElementsByTagName('img');
+var shownImages = [];
+
 
 var left = document.getElementById('left');
 var middle = document.getElementById('middle');
@@ -13,7 +15,7 @@ var totalTimesClicked = 0;
 function Product(name, imageURL) {
   this.name = name;
   this.imageURL = imageURL;
-  this.totalTimesClicked = 0;
+  this.timesClicked = 0;
   this.imageViewed = 0;
   allImages.push(this);
 
@@ -44,11 +46,11 @@ function votes() {
     var productList = document.getElementById('product-list');
     for (var i = 0; i < allImages.length; i++) {
       var newProductList = document.createElement('li');
-      newProductList.textContent = `${allImages[i].name} had ${allImages[i].votes} votes, and was shown ${allImages[i].imageViewed} times.`;
+      newProductList.textContent = `${allImages[i].name} had ${allImages[i].timesClicked} votes, and was shown ${allImages[i].imageViewed} times.`;
       productList.appendChild(newProductList);
     }
     for (var j = 0; j < photoContainer.length; j++) {
-      photoContainer[i].removeEventListener('click', imageClicked);
+      photoContainer[j].removeEventListener('click', imageClicked);
     }
   }
 }
@@ -56,16 +58,24 @@ function votes() {
 function imageClicked(event) {
   console.log('clicked on image');
   totalTimesClicked++;
+  // shownImages++;
   displayImages();
+  allImages[shownImages[0]].imageViewed++;
+  allImages[shownImages[1]].imageViewed++;
+  allImages[shownImages[2]].imageViewed++;
 
-  if (event.srcElement.id === '1') {
-    allImages[left].totalTimesClicked++;
-  } else if (event.srcElement.id === '2') {
-    allImages[middle].totalTimesClicked++;
-  } else if (event.srcElement.id === '3') {
-    allImages[right].totalTimesClicked++;
+
+  if (event.srcElement.id === 'left') {
+    allImages[shownImages[0]].timesClicked++;
+  } else if (event.srcElement.id === 'middle') {
+    allImages[shownImages[1]].timesClicked++;
+  } else if (event.srcElement.id === 'right') {
+    allImages[shownImages[2]].timesClicked++;
   }
+
+  // console.log(allImages[shownImages[0]], allImages[shownImages[1]], allImages[shownImages[2]]);
 }
+
 
 // var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
 // while ((nextImgIndex1 === left) || (nextImgIndex1 === middle) || (nextImgIndex3 === right)) {
@@ -96,7 +106,6 @@ function getRandomIndex() {
 
 
 function displayImages() {
-  var shownImages = [];
   shownImages[0] = getRandomIndex();
   shownImages[1] = getRandomIndex();
   while (shownImages[0] === shownImages[1]) {
@@ -114,7 +123,10 @@ function displayImages() {
   votes();
 }
 
-photoContainer.addEventListener('click', imageClicked);
+// photoContainer.addEventListener('click', imageClicked);
+for (var j = 0; j < photoContainer.length; j++) {
+  photoContainer[j].addEventListener('click', imageClicked);
+}
 
 
 
