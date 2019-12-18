@@ -2,113 +2,150 @@
 
 console.log('js linked');
 
-var imageDownloads = document.getElementsByTagName('img');
-var imgIndex1 = 0;
-var imgIndex2 = 1;
-var imgIndex3 = 2;
-var imgIndex4 = 3;
-// var imgIndex5 = 4;
-// var imgIndex6 = 5;
-// var imgIndex7 = 6;
-// var imgIndex8 = 7;
-// var imgIndex9 = 8;
-// var imgIndex10 = 9;
-// var imgIndex11= 10;
-// var imgIndex12= 11;
-// var imgIndex13= 12;
-// var imgIndex14= 13;
-// var imgIndex15= 14;
-// var imgIndex16= 15;
-// var imgIndex17= 16;
-// var imgIndex18= 17;
+var photoContainer = document.getElementsByTagName('img');
+var shownImages = [];
 
+
+var left = document.getElementById('left');
+var middle = document.getElementById('middle');
+var right = document.getElementById('right');
 var allImages = [];
+var totalTimesClicked = 0;
 
-function image(name, imageURL){
+function Product(name, imageURL) {
   this.name = name;
   this.imageURL = imageURL;
   this.timesClicked = 0;
+  this.imageViewed = 0;
   allImages.push(this);
 
 }
+console.log('function');
 
-new image('bag', 'img/bag.jpg');
-new image('banana', 'img/banana.jpg');
-new image('bathroom', 'img/bathroom.jpg');
-new image('boots', 'img/boots.jpg');
-new image('breakfast', 'img/breakfast.jpg');
-new image('chair', 'img/chair.jpg');
-new image('ctchulhu', 'img/cthulhu.jpg');
-new image('dog-duck', 'img/dog-duck.jpg');
-new image('dragon', 'img/dragon.jpg');
-new image('pen', 'img/pen.jpg');
-new image('pet-sweep', 'img/pet-sweep.jpg');
-new image('scissors', 'img/scissors.jpg');
-new image('shark', 'img/shark.jpg');
-new image('sweep', 'img/sweep.png');
-new image('tauntaun', 'img/tauntaun.jpg');
-new image('usb', 'img/usb.gif');
-new image('water-can', 'img/water-can.jpg');
-new image('wine-glass', 'img/wine-glass.jpg');
+new Product('bag', 'img/bag.jpg');
+new Product('banana', 'img/banana.jpg');
+new Product('bathroom', 'img/bathroom.jpg');
+new Product('boots', 'img/boots.jpg');
+new Product('breakfast', 'img/breakfast.jpg');
+new Product('chair', 'img/chair.jpg');
+new Product('ctchulhu', 'img/cthulhu.jpg');
+new Product('dog-duck', 'img/dog-duck.jpg');
+new Product('dragon', 'img/dragon.jpg');
+new Product('pen', 'img/pen.jpg');
+new Product('pet-sweep', 'img/pet-sweep.jpg');
+new Product('scissors', 'img/scissors.jpg');
+new Product('shark', 'img/shark.jpg');
+new Product('sweep', 'img/sweep.png');
+new Product('tauntaun', 'img/tauntaun.jpg');
+new Product('usb', 'img/usb.gif');
+new Product('water-can', 'img/water-can.jpg');
+new Product('wine-glass', 'img/wine-glass.jpg');
 
-var totalTimesClicked = 0;
-function imageClicked(event){
+function votes() {
+  if (totalTimesClicked === 25) {
+    var productList = document.getElementById('product-list');
+    for (var i = 0; i < allImages.length; i++) {
+      var newProductList = document.createElement('li');
+      newProductList.textContent = `${allImages[i].name} had ${allImages[i].timesClicked} votes, and was shown ${allImages[i].imageViewed} times.`;
+      productList.appendChild(newProductList);
+    }
+    for (var j = 0; j < photoContainer.length; j++) {
+      photoContainer[j].removeEventListener('click', imageClicked);
+    }
+  }
+}
+
+function imageClicked(event) {
   console.log('clicked on image');
   totalTimesClicked++;
-  if(event.srcElement.id === '1') {
-allImages[imgIndex1].totalTimesClicked++;
-  } else if (event.srcElement.id === '2') {
-    allImages[imgIndex2].totalTimesClicked++;
-  } else if (event.srcElement.id === '3') {
-    allImages[imgIndex3].totalTimesClicked++;
+  // shownImages++;
+  displayImages();
+  allImages[shownImages[0]].imageViewed++;
+  allImages[shownImages[1]].imageViewed++;
+  allImages[shownImages[2]].imageViewed++;
+
+
+  if (event.srcElement.id === 'left') {
+    allImages[shownImages[0]].timesClicked++;
+  } else if (event.srcElement.id === 'middle') {
+    allImages[shownImages[1]].timesClicked++;
+  } else if (event.srcElement.id === 'right') {
+    allImages[shownImages[2]].timesClicked++;
   }
-} 
 
-var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
-while ((nextImgIndex2 ===imgIndex1) || (nextImgIndex1 === imgIndex2)){
-  nextImgIndex1 = Math.floor(Math.random() * allImages.length);
-}
-var nextImgIndex2 = Math.floor(Math.random() * allImages.length);
-while((nextImgIndex2 === imgIndex1) || (nextImgIndex2 === imgIndex2) || (nextImgIndex2 === nextImgIndex1===)) {
-  nextImgIndex2 = Math.floor(Math.random() * allImages.length);
-}
-var nextImgIndex3 = Math.floor(Math.random() * allImages.length);
-while((nextImgIndex3 === imgIndex1) || (nextImgIndex3 === imgIndex2) || (nextImgIndex3 === nextImgIndex1 === nextImgIndex2)) {
-  nextImgIndex3 = Math.floor(Math.random() * allImages.length);
-}
-imgIndex1 = nextImgIndex1;
-imgIndex2 = nextImgIndex2;
-imgIndex3 = nextImgIndex3;
-
-imageDownloads[0].src = allImages[imgIndex1].imageURL;
-imageDownloads[1].src = allImages[imgIndex2].imageURL;
-imageDownloads[2].src = allImages[imgIndex3].imageURL;
-
-if(totalClicks >=25){
-  var footerElement = document.getElementsByClassName('footer')[0];
-  footerElement.textContent = `Thank you for assisting us in choosing a new product`;
-}
-}
-for (var i = 0; i<imageDownloads.length; i++) {
-  imageDownloads[i].addEventListener('click', imageClicked);
+  // console.log(allImages[shownImages[0]], allImages[shownImages[1]], allImages[shownImages[2]]);
 }
 
 
+// var nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex1 === left) || (nextImgIndex1 === middle) || (nextImgIndex3 === right)) {
+//   nextImgIndex1 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex2 === left) || (nextImgIndex2 === middle) || (nextImgIndex2 === nextImgIndex1)) {
+//   nextImgIndex2 = Math.floor(Math.random() * allImages.length);
+// }
+// var nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// while ((nextImgIndex3 === left) || (nextImgIndex3 === middle) || (nextImgIndex3 === nextImgIndex1 === nextImgIndex2)) {
+//   nextImgIndex3 = Math.floor(Math.random() * allImages.length);
+// }
+// if (totalTimesClicked >= 25) {
+//   var footerElement = document.getElementsByClassName('footer')[0];
+//   footerElement.textContent = 'Thank you for assisting us in choosing a new product';
+// }
 
+console.log('things');
 
+displayImages();
 
-
-
-
-
-
-
-
-
-
-
-
-
-function images(){
-
+function getRandomIndex() {
+  var randomIndex = Math.floor(Math.random() * allImages.length);
+  return randomIndex;
 }
+
+
+
+function displayImages() {
+  shownImages[0] = getRandomIndex();
+  shownImages[1] = getRandomIndex();
+  while (shownImages[0] === shownImages[1]) {
+    shownImages[1] = getRandomIndex();
+  }
+  shownImages[2] = getRandomIndex();
+  while (shownImages[2] === shownImages[0] || shownImages[2] === shownImages[1]) {
+    shownImages[2] = getRandomIndex();
+  }
+
+  left.src = allImages[shownImages[0]].imageURL;
+  middle.src = allImages[shownImages[1]].imageURL;
+  right.src = allImages[shownImages[2]].imageURL;
+
+  votes();
+}
+
+// photoContainer.addEventListener('click', imageClicked);
+for (var j = 0; j < photoContainer.length; j++) {
+  photoContainer[j].addEventListener('click', imageClicked);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//day 2 new stuff to add
+//
+//
+//adding onto existing base code
+//using chart.js
+//pulling in external code into exesting code
+//gonna use a cdn to pull in our files, its a contant delivery;
