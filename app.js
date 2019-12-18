@@ -20,42 +20,69 @@ function graphData(property) {
   return graph;
 }
 
-function Product(name, imageURL) {
+function Product(name, imageURL, timesClicked, imageViewed) {
   this.name = name;
   this.imageURL = imageURL;
-  this.timesClicked = 0;
-  this.imageViewed = 0;
+
+  if (timesClicked) {
+    this.timesClicked = timesClicked;
+  } else {
+    this.timesClicked = 0;
+  }
+
+  if (imageViewed) {
+    this.imageViewed = imageViewed;
+  } else {
+    this.imageViewed = 0;
+  }
+
   allImages.push(this);
 
 }
-console.log('function');
-//mehtods:
-new Product('bag', 'img/bag.jpg');
-new Product('banana', 'img/banana.jpg');
-new Product('bathroom', 'img/bathroom.jpg');
-new Product('boots', 'img/boots.jpg');
-new Product('breakfast', 'img/breakfast.jpg');
-new Product('chair', 'img/chair.jpg');
-new Product('ctchulhu', 'img/cthulhu.jpg');
-new Product('dog-duck', 'img/dog-duck.jpg');
-new Product('dragon', 'img/dragon.jpg');
-new Product('pen', 'img/pen.jpg');
-new Product('pet-sweep', 'img/pet-sweep.jpg');
-new Product('scissors', 'img/scissors.jpg');
-new Product('shark', 'img/shark.jpg');
-new Product('sweep', 'img/sweep.png');
-new Product('tauntaun', 'img/tauntaun.jpg');
-new Product('usb', 'img/usb.gif');
-new Product('water-can', 'img/water-can.jpg');
-new Product('wine-glass', 'img/wine-glass.jpg');
+console.log('start');
+var savedProductString = localStorage.getItem('savedProducts');
+if (savedProductString) {
+  var arrayOfNotProducts = JSON.parse(savedProductString);
+  console.log(arrayOfNotProducts);
+  for (var i = 0; i < arrayOfNotProducts.length; i++) {
+    new Product(arrayOfNotProducts[i].name, arrayOfNotProducts[i].imageURL, arrayOfNotProducts[i].timesClicked);
+  }
+  console.log(allImages);
+} else {
+  //mehtods:
+  new Product('bag', 'img/bag.jpg');
+  new Product('banana', 'img/banana.jpg');
+  new Product('bathroom', 'img/bathroom.jpg');
+  new Product('boots', 'img/boots.jpg');
+  new Product('breakfast', 'img/breakfast.jpg');
+  new Product('chair', 'img/chair.jpg');
+  new Product('ctchulhu', 'img/cthulhu.jpg');
+  new Product('dog-duck', 'img/dog-duck.jpg');
+  new Product('dragon', 'img/dragon.jpg');
+  new Product('pen', 'img/pen.jpg');
+  new Product('pet-sweep', 'img/pet-sweep.jpg');
+  new Product('scissors', 'img/scissors.jpg');
+  new Product('shark', 'img/shark.jpg');
+  new Product('sweep', 'img/sweep.png');
+  new Product('tauntaun', 'img/tauntaun.jpg');
+  new Product('usb', 'img/usb.gif');
+  new Product('water-can', 'img/water-can.jpg');
+  new Product('wine-glass', 'img/wine-glass.jpg');
+}
+console.log('conditions ran');
+
 
 function votes() {
-  if (totalTimesClicked === 25) {
+  if (totalTimesClicked === 5) {
+
+    localStorage.setItem('savedProducts', JSON.stringify(allImages));
+
     var productList = document.getElementById('product-list');
     for (var i = 0; i < allImages.length; i++) {
       var newProductList = document.createElement('li');
       newProductList.textContent = `${allImages[i].name} had ${allImages[i].timesClicked} votes, and was shown ${allImages[i].imageViewed} times.`;
       productList.appendChild(newProductList);
+
 
       var ctx = document.getElementById('myChart').getContext('2d');
       // eslint-disable-next-line no-undef
@@ -113,7 +140,6 @@ function imageClicked(event) {
   allImages[shownImages[1]].imageViewed++;
   allImages[shownImages[2]].imageViewed++;
 
-
   if (event.srcElement.id === 'left') {
     allImages[shownImages[0]].timesClicked++;
   } else if (event.srcElement.id === 'middle') {
@@ -122,7 +148,6 @@ function imageClicked(event) {
     allImages[shownImages[2]].timesClicked++;
   }
 
-  // console.log(allImages[shownImages[0]], allImages[shownImages[1]], allImages[shownImages[2]]);
 }
 
 console.log('things');
@@ -133,8 +158,6 @@ function getRandomIndex() {
   var randomIndex = Math.floor(Math.random() * allImages.length);
   return randomIndex;
 }
-
-
 
 function displayImages() {
   shownImages[0] = getRandomIndex();
@@ -153,13 +176,9 @@ function displayImages() {
 
   votes();
 }
-// photoContainer.addEventListener('click', imageClicked);
 for (var j = 0; j < photoContainer.length; j++) {
   photoContainer[j].addEventListener('click', imageClicked);
 }
-
-
-
 
 
 // localStorage.setItem('userName', 'harlen');
