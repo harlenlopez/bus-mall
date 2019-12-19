@@ -45,7 +45,7 @@ if (savedProductString) {
   var arrayOfNotProducts = JSON.parse(savedProductString);
   console.log(arrayOfNotProducts);
   for (var i = 0; i < arrayOfNotProducts.length; i++) {
-    new Product(arrayOfNotProducts[i].name, arrayOfNotProducts[i].imageURL, arrayOfNotProducts[i].timesClicked);
+    new Product(arrayOfNotProducts[i].name, arrayOfNotProducts[i].imageURL, arrayOfNotProducts[i].timesClicked, arrayOfNotProducts[i].imageViewed);
   }
   console.log(allImages);
 } else {
