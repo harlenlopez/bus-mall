@@ -73,7 +73,7 @@ console.log('conditions ran');
 
 
 function votes() {
-  if (totalTimesClicked === 5) {
+  if (totalTimesClicked === 25) {
 
     localStorage.setItem('savedProducts', JSON.stringify(allImages));
 
