@@ -1,0 +1,1 @@
+This application allows the user to select the image they like the most, after 25 images have been selectedd it will show the user how many times they picked an image compared to how many times they viewed it.
